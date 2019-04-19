@@ -1,7 +1,6 @@
 import os
 import sqlite3
 
-# Check To See If Database Exists
 if os.path.isfile('./sqlite_exercises.sqlite') == False:
 
     # Database Object
@@ -11,24 +10,31 @@ if os.path.isfile('./sqlite_exercises.sqlite') == False:
     cursor = conn.cursor()
 
     # Configure Database
-    cursor.execute('create table exercise_logs (id integer primary key autoincrement, type text, minutes integer, calories integer, heart_rate integer);')
-
+    cursor.execute('CREATE TABLE exercise_logs(id INTEGER PRIMARY KEY AUTOINCREMENT, type TEXT, minutes INTEGER, calories INTEGER, heart_rate INTEGER);')
     cursor.close()
 
     # Commit & Close
     conn.commit()
     conn.close()
 
+# Open Connection
 conn = sqlite3.connect('./sqlite_exercises.sqlite')
 cursor = conn.cursor()
 
 def insertLog(t,m,c,h,cursor):
-    sql = 'insert into exercise_logs(type, minutes, calories, heart_rate) values (?,?,?,?)'
+    sql = 'INSERT INTO exercise_logs(type, minutes, calories, heart_rate) VALUES(?,?,?,?)'
     cursor.execute(sql, (str(t), int(m), int(c), int(h)))
 
 etype = 'running'
-minutes = 60
+minutes = 61
 calories = 200
 heart_rate = 80
 
 insertLog(etype, minutes, calories, heart_rate, cursor)
+
+#cursor.execute('''INSERT INTO exercise_logs(type, minutes, calories, heart_rate) VALUES(?,?,?,?)''', (etype, minutes, calories, heart_rate))
+
+conn.commit()
+conn.close()
+
+print('Data Inserted.')
